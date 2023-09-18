@@ -11,20 +11,20 @@ from magic_filter.operations import call
 from handlers import keyboard
 
 # __________________________Данные бота__________________________
-admin_id = 5578159253 # Id админа
+admin_id = 2018079386 # Id админа
 token = "6513775298:AAHFE_DqDW3rgWdR_hhaTkYetRNCvZXcGIE"  # Токен бота
-chat_link = "https://t.me/+5UibOMGpiYMzNWQy"  # Ссылка на чат
+chat_link = "https://t.me/+BI-3nBV-yn8xODk6"  # Ссылка на чат
 bot = Bot(token=token)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 # __________________________Вопросы__________________________
-question_1 = "Вы пришли с рекламы (с какой) или же от друга (ссылка) "
+question_1 = "Вы пришли с рекламы (с какой?) или же от друга (ссылка) "
 question_2 = "Сколько времени готовы уделять работе?"
-question_3 = "Был ли опыт в скаме? Если да то какой?"
+question_3 = "Был ли опыт в скаме? Если да, то какой?"
 # __________________________Отображение вопросов у админа__________________________
-admin_question_1 = "Марка телефона"
-admin_question_2 = "Сколько готов уделять времени"
-admin_question_3 = "Был ли опыт"
+admin_question_1 = "От куда пришел чел"
+admin_question_2 = "Время на ворк"
+admin_question_3 = "Опыт в скаме"
 # _________________________________________________________
 
 
@@ -41,7 +41,7 @@ class Database:
         self.cursor = self.connection.cursor()
 
 
-        print("The database is connected successfully")
+        print("Всё кайф")
 
     def add_user(self, ID, username):
         with self.connection:
@@ -174,7 +174,7 @@ async def keyboard_handler(message: types.message):
             case "Выплаты💸":
                 await message.reply('Выплаты: https://t.me/win1telegaaa')
             case "Чат💬":
-                await message.reply('Чатик: https://t.me/+WcE-JMTkAVBlOWE6')
+                await message.reply('Чатик: https://t.me/+BI-3nBV-yn8xODk6')
             case "⚡️ЗАРЯД⚡️":
                 await message.reply('⚡️⚡️⚡️ЗАРЯД НА ЕБНУТЫЙ СКАМ⚡️⚡️⚡️️')
             case "📚Мануалы":
@@ -193,18 +193,33 @@ async def keyboard_handler(message: types.message):
     except Exception as e:
         print(e)
 
-STAFF_COMMAND = """
-ПЕРСОНАЛ ГРУППЫ
+async def command_staff(message: types.Message):  # Действие при /staff
+                await bot.send_message(message.chat.id,
+                                       """<u><b>ПЕРСОНАЛ ГРУППЫ</b></u>
+👑 <b>Основатель</b>
+ └ <a href="https://t.me/kristiii772">@kristiii772</a> » ТС
 
-👑 Основатель
- └ @kristiii772 (https://t.me/kristiii772) » ТС
+⚜️ <b>Соучредитель</b>
+ └ <a href="https://t.me/n1tex">@n1tex</a> » Кодер
 
-⚜️ Соучредитель
- └ @n1tex (https://t.me/n1tex) » Кодер
+👮🏼 <b>Админ</b>
+ ├ <a href="https://t.me/efremoon">@efremoon</a> » тп локер
+ └ <a href="https://t.me/rasipuha">@rasipuha</a> » Гарант""", parse_mode=types.ParseMode.HTML)
 
-👮🏼 Админ
- ├ @efremoon (https://t.me/efremoon) » тп локер
- └ @rasipuha (https://t.me/rasipuha) » Гарант"""
+async def command_card(message: types.Message):  # Действие при /card
+                await bot.send_message(message.chat.id,
+                                       """<b>🇺🇦Укр  (Моно банк):</b> 
+<code>5375414118127207</code>
+Ксенія Єпанова
+(от 500 грн)
+<b>🇷🇺РФ (Промсвязьбанк):</b> 
+<code>5203738029970372</code>
+Чуркулов Кирилл В.
+(от 1500 руб)
+<b>🇰🇿КЗ (kaspiGold):</b> 
+<code>4400430201189336</code>
+Иван З.
+(от 7000 теньге)""", parse_mode=types.ParseMode.HTML)
 
 # @dp.callback_query_handlers(cb.filter(action=["start_answer"]))
 async def start_state(call: types.CallbackQuery, callback_data: dict):  # Первый вопрос
@@ -247,13 +262,14 @@ async def answer3(message: types.Message, state: FSMContext):  # Отображ�
 def register_handlers_client(dp: Dispatcher):
     dp.register_callback_query_handler(send_state, cb.filter(action=["send", "application"]), state="*")
     dp.register_message_handler(command_start, commands=["start"])
+    dp.register_message_handler(command_staff, commands=["staff"])
+    dp.register_message_handler(command_card, commands=["card"])
     dp.register_callback_query_handler(access, text_contains="#")
     dp.register_callback_query_handler(start_state, cb.filter(action=["start_answer"]))
     dp.register_message_handler(answer1, state=get_answer.answer1)
     dp.register_message_handler(answer2, state=get_answer.answer2)
     dp.register_message_handler(answer3, state=get_answer.answer3)
     dp.register_message_handler(keyboard_handler, state='*')
-
 # _________________________________________________________
 
 
